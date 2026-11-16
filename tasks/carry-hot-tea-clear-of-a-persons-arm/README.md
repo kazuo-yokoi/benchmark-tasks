@@ -199,6 +199,8 @@ how far each way keeps from the map at every look.
 
 A Dream-1 run of three 1,200-step trials (1 minute of simulated time each) took about 26 minutes on this machine (RTX
 6000 Ada, shared with other jobs), Isaac Sim's start included; Dream-1's round trip averaged 0.9 s per request (48
-rows each, 25 requests per trial). The scripted demo takes about 2.5 minutes for a trial it finishes in under 20 s of simulated time, Isaac
-Sim's start included. The layout and the arms' movements are fixed (`-E object_jitter=0`); there are no seeds to
+rows each, 25 requests per trial). It scored 0 in each lot: in lots A and B it moved the cup about near its start
+and never brought it toward the coaster, so the right arm never moved; in lot C it carried the cup toward the pen, so
+the left arm reached in, but the cup never came near the coaster. The scripted demo takes about 2.5 minutes for a
+trial it finishes in under 20 s of simulated time, Isaac Sim's start included. The layout and the arms' movements are fixed (`-E object_jitter=0`); there are no seeds to
 choose.

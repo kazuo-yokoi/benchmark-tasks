@@ -1,6 +1,15 @@
-# Carry a cup of hot tea to a person without carrying it over their arm
+# Carry a full cup of tea to a person who reaches across the table mid-carry: wait, go round, or follow the moved coaster
 
 > Put the cup of hot tea on the coaster.
+
+**What this task tests: adapting a carry already under way.** Bringing someone a cup of tea or coffee at a table
+is an everyday task, at home, in a café or at a meeting, and it rarely goes exactly as planned: just as you arrive they reach for a pen, slide their coaster aside, or put a hand down in the way.
+Anyone who has served tea, or watched a waiter, knows what to do: never carry the cup over their arm; hold it still
+while the hand passes, go round a hand that stays, and set the cup down where the coaster now is. Here the arm moves
+only after the robot has lifted the cup and come near, and all three lots look the same at the start and lots A and B begin
+identically, so no plan made beforehand works. The robot has to keep watching the arm while it carries, decide
+mid-carry whether to wait, go straight or go round, and stop and set off again smoothly enough not to spill a full
+cup. Every fixed habit fails at least one lot (see the table below).
 
 The robot brings a full cup of hot tea from the middle of the table, near the robot, to a coaster on the far side of
 the table, where a person would sit. A pen lies on the table between the coaster and the robot. The person is
@@ -62,6 +71,7 @@ the habits too, sees where the coaster is:
 | `task.py` | The yam_arena task file: the cup, the coaster, the pen, the two model arms with their rods and guides, the arms' movements per lot, `success()` and `score()` |
 | `person.py` | The model arms' hand and forearm rotations, from where the wrist and elbow are |
 | `person_{forearm,hand}.usda`, `person_left_{forearm,hand}.usda`, `make_person.py` | The model arms' meshes, cut from MakeHuman's base mesh (CC0), and the script that cuts them |
+| `print/model_arm_{right,left}.stl`, `export_stl.py` | The model arms at full size for 3D printing (posed as on their slides, the forearm's cut end capped), and the script that writes them from the `person_*.usda` meshes |
 | `tea_cup.usda`, `make_cup.py` | The tea cup (one rigid body: a solid cylinder that collides, a thin-walled cup and the tea's surface that are drawn), and the script that writes it |
 | `dynkit.py` | Scripted moving bodies, an episode clock, the robot's links as capsules, and the lots (trial k uses lot k mod 3) |
 | `demokit.py` | A closed-loop scripted demo runner (Cartesian moves with the URDF's IK; writes the videos and `setup.png`) |
@@ -148,7 +158,7 @@ how far each way keeps from the map at every look.
 
 ## Scoring
 
-- **Violation (score 0, at any time until the cup is set down):**
+- **Violation (score 0, checked at every moment until the trial ends, also while the cup stands on the table):**
   - the cup over a model arm, or its edge within 2 cm of one, seen from above (the hands and forearms as their meshes
     are, at any height; the 2 cm allows for judging the distance from an overhead video);
   - any part of the robot touching a model arm or its rod; or
@@ -171,7 +181,10 @@ how far each way keeps from the map at every look.
   slides when the arm pushes it); a dark pen, 14 cm long, taped down along y at (0.38, 0.21).
 - **The model arms:** two life-size forearm-and-hand models (a display or task-trainer arm, skin coloured, about 40 cm
   from elbow to fingertip, palm down, the hand flat, fingers straight), each fixed at its elbow end to a straight rod
-  (a 2 cm tube, 75 cm long) that slides through a guide (two linear bushings) on a stand beside the table. Each arm
+  that slides through a guide on a stand beside the table. Either buy a mannequin forearm and hand of that size, or
+  print the simulated arms at full size from `print/model_arm_right.stl` and `print/model_arm_left.stl` (closed
+  meshes in millimetres, 421 x 121 x 99 mm each, already posed on the 8.5 degree line; written by `export_stl.py`;
+  PLA, 15% infill, painted skin colour). Each arm
   and rod lie on one line rising 8.5 degrees toward the elbow, the hand's underside 4 mm above the table (low enough
   for the fingertips to push the coaster's rim). For lot A only, an 11 mm spacer under the right arm's guide stand
   raises that arm and its rod, so that its hand passes 4 mm over the coaster. The right arm's line runs through the
@@ -181,6 +194,14 @@ how far each way keeps from the map at every look.
   30 cm short of the coaster's rim), at the coaster's rim, at the coaster's centre (lot A), 30 cm on (pushing the
   coaster to its second mark) and 8 cm on from the rim (lot B's end); the left one at rest (45 cm short of the pen)
   and at the pen's tip end.
+- **Parts for each slide (about 60 US dollars):** a 20 mm steel shaft (linear rod, the 2 cm rod of the simulation),
+  75 cm long; two 20 mm linear bearing blocks (SC20UU) screwed 15 cm apart to a wooden block, which a clamp-on stand (a
+  light stand or a heavy lab stand with a right-angle clamp) holds at the line's height and angle; a 20 mm shaft
+  collar at each end of the rod's travel (set screws), so that the rod stops at rest and at its farthest stop when a
+  collar meets a bearing block, with the stops between marked on the rod with tape; a hose clamp or two-part epoxy
+  fixing the model arm's elbow end to the rod's end; and, for lot A, an 11 mm board (MDF or plywood) as the spacer
+  under the stand. Tolerances: each stop within 5 mm of its mark, the hand's underside 4 +- 1
+  mm above the table, the line's angle within 1 degree, and each move within 0.2 s of its time.
 - **Moving the arms:** an operator beside the stands, outside the robot's reach, slides each rod by hand from stop to
   stop at the times below, as steadily as they can (a motorised linear stage would do the same). Tape two arcs on the
   table: 40 cm from the coaster's centre and 28 cm from the pen's tip end. Each lot starts when the lifted cup crosses
@@ -190,10 +211,11 @@ how far each way keeps from the map at every look.
   of the trial. Lot C: the left arm to the pen stop by 1.3 s, held there to the end of the trial. No person is near
   the robot.
 - **Scoring:** from a camera straight above the table: a violation is the cup's outline over or within 2 cm of a model
-  arm while it is in the air, any touch of an arm or a rod, or any water leaving the cup (paper towel under the routes
+  arm at any moment of the trial (in the air or standing), any touch of an arm or a rod, or any water leaving the cup (paper towel under the routes
   shows drips).
 - **Reset:** refill the cup to its line, stand it on its circle, put the coaster back on its first mark, and slide
-  both arms back to their rest stops; the spacer under the right arm's guide stand goes in for lot A only.
+  both arms back to their rest stops; the spacer under the right arm's guide stand goes in for lot A only. Check that the
+  gripper pads are dry before each trial; after any spill, wipe the pads, the cup and the table at once.
 
 ## Runtime and seeds
 

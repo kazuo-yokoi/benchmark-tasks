@@ -1,0 +1,22 @@
+{
+  "title": "Open a just-shaken bottle of sparkling water without it foaming over: let the gas out a little at a time",
+  "category": "Societal relatability",
+  "keywords": [
+    "sparkling water",
+    "screw cap",
+    "carbonation",
+    "foam",
+    "bimanual",
+    "visual feedback",
+    "household"
+  ],
+  "instruction": "Open the bottle of sparkling water and put the cap in the dish.",
+  "context": "Everyone has had a fizzy drink that was knocked about foam over their hands. People open one in stages: turn the cap just until it hisses, and if the foam climbs into the neck, turn it back until the foam drops, then crack it again, until the hiss stops; only then does the cap come off. Twist it straight off and the foam pours over the rim. One hand holds the bottle upright while the other works the cap back and forth in small turns, watching the foam through the clear bottle. The shaking is the bottle's state at the start, not an event: nothing happens during the trial that the robot doesn't cause.",
+  "setup": "Positions in cm from the midpoint between the arm bases (x forward, y to the robot's left); heights above the table top. A 500 mL PET bottle of Perrier sparkling natural mineral water (the 50 cl / 16.9 fl oz PET bottle, one case per session; 6.5 cm across, 20.5 cm tall, 28 mm screw cap), chilled to 6 +-1 C, standing upright, base centred at (28, -12), on a 30 x 20 cm grey absorbent drip mat 3 mm thick. Before chilling, the cap is turned about 30 deg, just enough to break the tamper ring's bridges and short of the seal (which opens near 45 deg, so no gas escapes), then turned back to its stop (check on a few bottles of each case that none hisses). A thin black line is drawn down the cap's side and across the neck below it, aligned when closed, so the cap's angle reads from the video. Just before the trial the bottle is shaken: ten full inversions in 5 s, then stood on the mat; the trial starts at once (a layer of foam is visible on the water). For real trials only (not in the simulation), a clear acrylic splash screen (30 x 30 cm) stands 15 cm behind the bottle. A white ceramic dish, 10 cm across and 1.2 cm tall, at (17, -27) for the cap. Both arms start at the ready pose.",
+  "scoring": "0, latched for the trial: foam or water comes out over the bottle's rim (judged on the side video of the neck: liquid or foam crossing the rim, not condensation), or the bottle tips past 30 deg. Otherwise, at the end of the trial: 1.0 once the cap is off and lies in the dish, let go (no gripper within 5 cm of it), and the bottle stands upright (within 10 deg) on the mat with no gripper within 7 cm of its axis, for 1 s (until then 0.5); 0.5 if the cap is off but not in the dish (or the bottle is still held); 0.25 if the cap is still on but the bottle has been vented (with the cap cracked past 45 deg, no foam rises above the water for 3 s); 0 otherwise. Real trial: a side camera on the neck against a dark card, at 60 fps.",
+  "run_limit": "2,400 steps (2 minutes at 20 Hz) per trial",
+  "reset_notes": "Operators wear safety glasses. Each trial uses a new bottle from the same chilled case (opened bottles can be recapped for drinking). Dry the mat, or swap it, after any spill. Cover each gripper and wrist with a close-fitting waterproof sleeve (e.g. a nitrile glove finger over each pad and cling film over the wrist), changed after a spill; wipe condensation off the bottle before the trial. Check the case once per session: a reference bottle cracked 70 deg and held foams over the rim within 3 to 10 s; turned back to 20 deg as the foam reaches the shoulder, the foam drops below the shoulder within 3 s.",
+  "fidelity": "Rigid bodies, 240 Hz physics, 20 Hz control. The cap turns on a damped joint (about 0.08 N m at 90 deg/s); its seal opens past 45 deg and the thread lets go at 1.55 turns, after which the cap is free. The gas and foam are a model (fizz.py): headspace pressure leaks through the opened seal, gas leaves the shaken water faster the lower the pressure, the foam it makes collapses in seconds, and is drawn as a white column inside the bottle. Water is rigid mass.",
+  "scores": "Dream-1 run: 0 (grippers move near the bottle and dish but never take hold of the cap). Demo (cracks the cap to 70 deg, closes it back when the foam reaches the shoulder, until the hiss stops, then unscrews it): 1.0 in 1,521 steps. Controls: twisted off 0; cracked and held 0.",
+  "media": "M-DC5RSF"
+}
